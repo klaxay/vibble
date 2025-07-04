@@ -1,18 +1,30 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import cors from 'cors'
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import http from 'http';
 
-import authRoutes from './routes/authRoutes.js'
+import authRoutes from './routes/authRoutes.js';
+import chatRoutes from './routes/chatRoutes.js'; // ✅ Add chat/message routes
+import { initWebSocketServer } from './ws.js';
 
-dotenv.config()
+dotenv.config();
 
-const app = express()
+const app = express();
+const server = http.createServer(app);
 
-app.use(cors())
-app.use(express.json())
+// 🌐 Middleware
+app.use(cors());
+app.use(express.json());
 
-app.use('/api/auth', authRoutes)
+// 🔗 Routes
+app.use('/api/auth', authRoutes);
+app.use('/api', chatRoutes); // ✅ Use other API routes here
 
-app.listen(process.env.PORT || 3000, ()=>{
-    console.log("Vibble Backend Running");
-})
+// 🔌 WebSocket Server
+initWebSocketServer(server);
+
+// 🚀 Start server
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`✅ Vibble Backend running on http://localhost:${PORT}`);
+});
