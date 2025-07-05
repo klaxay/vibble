@@ -64,8 +64,14 @@ export const fetchMessages = (userId) => async (dispatch, getState) => {
     });
 
     const data = await res.json();
-    dispatch(setMessages(data));
+    if (!Array.isArray(data)) {
+      console.warn("Messages fetch returned non-array:", data);
+      dispatch(setMessages([]));
+    } else {
+      dispatch(setMessages(data));
+    }
   } catch (err) {
     console.error('Failed to fetch messages', err);
+    dispatch(setMessages([])); // ✅ Avoid crashing
   }
 };

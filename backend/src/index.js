@@ -5,6 +5,7 @@ import http from 'http';
 
 import authRoutes from './routes/authRoutes.js';
 import chatRoutes from './routes/chatRoutes.js'; // ✅ Add chat/message routes
+import userRoutes from './routes/userRoutes.js'
 import { initWebSocketServer } from './ws.js';
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(express.json());
 // 🔗 Routes
 app.use('/api/auth', authRoutes);
 app.use('/api', chatRoutes); // ✅ Use other API routes here
+app.use('/api/users', userRoutes)
 
 // 🔌 WebSocket Server
 initWebSocketServer(server);
