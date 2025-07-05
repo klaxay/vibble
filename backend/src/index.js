@@ -23,6 +23,10 @@ app.use('/api', chatRoutes); // ✅ Use other API routes here
 // 🔌 WebSocket Server
 initWebSocketServer(server);
 
+app.get('/api/test', (req, res)=>{
+  res.json({success:true})
+})
+
 // 🚀 Start server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
